@@ -1,35 +1,59 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { ContactList } from "./components/ContactList/ContactList";
+import { SearchBox } from "./components/SearchBox/SearchBox";
+import ContactForm from "./components/ContactForm/ContactForm";
+import { useDispatch } from "react-redux";
+import { useEffect, useRef } from "react";
+import { fetchContacts } from "./redux/contactsOps";
+import { useSelector } from "react-redux";
+import { selectContactsNumber, selectError } from "./redux/selectors";
+import { useState } from "react";
+import toast, { Toaster } from "react-hot-toast";
+import "./index.css";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const dispatch = useDispatch();
+  const [flag, setFlag] = useState("delete");
+  const [id, setId] = useState("");
+  const contactsNumber = useSelector(selectContactsNumber);
+
+  useEffect(() => {
+    dispatch(fetchContacts());
+  }, [dispatch]);
+
+  const error = useSelector(selectError);
+
+  useEffect(() => {
+    if (error.length > 0) {
+      toast.error(error);
+    }
+  }, [error]);
+
+  const searchRef = useRef();
+
+  const handleScroll = (id) => {
+    const dims = searchRef.current.getBoundingClientRect();
+
+    window.scrollTo({
+      top: dims.top,
+      behavior: "smooth",
+    });
+    setFlag("change");
+    setId(id);
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div>
+      <div className="wrapper">
+        <h1>Phonebook</h1>
+        <h2 className="num">{contactsNumber} contacts</h2>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+
+      <ContactForm ref={searchRef} flag={flag} id={id} setFlag={setFlag} />
+      <SearchBox />
+      <ContactList handleScroll={handleScroll} />
+      <Toaster position="top-right"></Toaster>
+    </div>
+  );
 }
 
-export default App
+export default App;
