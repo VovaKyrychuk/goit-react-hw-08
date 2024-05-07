@@ -2,9 +2,9 @@ import css from "./ContactForm.module.css";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { useId, forwardRef, useEffect, useState } from "react";
 import * as Yup from "yup";
-import { addContact, changeContact } from "../../redux/contactsOps";
+import { addContact, changeContact } from "../../redux/contacts/operations";
 import { useDispatch, useSelector } from "react-redux";
-import { selectContacts } from "../../redux/selectors";
+import { selectContacts } from "../../redux/contacts/selectors";
 import { useRef } from "react";
 
 const ContactForm = forwardRef(({ flag, id, setFlag }, ref) => {
