@@ -1,58 +1,60 @@
-import { ContactList } from "./components/ContactList/ContactList";
-import { SearchBox } from "./components/SearchBox/SearchBox";
-import ContactForm from "./components/ContactForm/ContactForm";
+import { Route, Routes } from "react-router-dom";
+import { Layout } from "./components/Layout/Layout";
+import { lazy, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { useEffect, useRef } from "react";
-import { fetchContacts } from "./redux/contactsOps";
-import { useSelector } from "react-redux";
-import { selectContactsNumber, selectError } from "./redux/selectors";
-import { useState } from "react";
-import toast, { Toaster } from "react-hot-toast";
-import "./index.css";
+import { useAuth } from "./hooks/useAuth";
+import { ColorRing } from "react-loader-spinner";
+import { RefreshUser } from "./redux/auth/operations";
+import { RestrictedRoute } from "./components/RestrictedRout";
+import { PrivateRoute } from "./components/PrivateRout";
+
+const HomePage = lazy(() => import("./page/HomePage/HomePage"));
+const ContactsPage = lazy(() => import("./page/ContactsPage/ContactsPage"));
+const RegisterPage = lazy(() => import("./page/RegisterPage/RegisterPage"));
+const LoginPage = lazy(() => import("./page/LoginPage/LoginPage"));
 
 function App() {
   const dispatch = useDispatch();
-  const [flag, setFlag] = useState("delete");
-  const [id, setId] = useState("");
-  const contactsNumber = useSelector(selectContactsNumber);
-
+  const { IsRefreshing } = useAuth();
   useEffect(() => {
-    dispatch(fetchContacts());
+    dispatch(RefreshUser());
   }, [dispatch]);
-
-  const error = useSelector(selectError);
-
-  useEffect(() => {
-    if (error.length > 0) {
-      toast.error(error);
-    }
-  }, [error]);
-
-  const searchRef = useRef();
-
-  const handleScroll = (id) => {
-    const dims = searchRef.current.getBoundingClientRect();
-
-    window.scrollTo({
-      top: dims.top,
-      behavior: "smooth",
-    });
-    setFlag("change");
-    setId(id);
-  };
-
-  return (
-    <div>
-      <div className="wrapper">
-        <h1>Phonebook</h1>
-        <h2 className="num">{contactsNumber} contacts</h2>
-      </div>
-
-      <ContactForm ref={searchRef} flag={flag} id={id} setFlag={setFlag} />
-      <SearchBox />
-      <ContactList handleScroll={handleScroll} />
-      <Toaster position="top-right"></Toaster>
+  return IsRefreshing ? (
+    <div className="colorRingWrapperBox">
+      <ColorRing
+        visible={true}
+        height="80"
+        width="80"
+        ariaLabel="color-ring-loading"
+        wrapperStyle={{}}
+        wrapperClass="color-ring-wrapper"
+        colors={["#de0c1c", "#fe2d2d", "#fb7830", "	#fecf02", "#ffdd47"]}
+      />
     </div>
+  ) : (
+    <Routes>
+      <Route element={<Layout />}>
+        <Route index element={<HomePage />} />
+        <Route
+          path="/contacts"
+          element={
+            <PrivateRoute component={ContactsPage} redirectTo="/login" />
+          }
+        />
+        <Route
+          path="/register"
+          element={
+            <RestrictedRoute component={RegisterPage} redirectTo="/contacts" />
+          }
+        />
+        <Route
+          path="/login"
+          element={
+            <RestrictedRoute component={LoginPage} redirectTo="/contacts" />
+          }
+        />
+      </Route>
+    </Routes>
   );
 }
 
