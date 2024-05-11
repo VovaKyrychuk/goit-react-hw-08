@@ -3,9 +3,12 @@ import { SearchBox } from "../../components/SearchBox/SearchBox";
 import ContactForm from "../../components/ContactForm/ContactForm";
 import { useDispatch } from "react-redux";
 import { useEffect, useRef } from "react";
-import { FetchContacts } from "../../redux/operations";
+import { FetchContacts } from "../../redux/contacts/operations";
 import { useSelector } from "react-redux";
-import { selectContactsNumber, selectError } from "../../redux/selectors";
+import {
+  selectContactsNumber,
+  selectError,
+} from "../../redux/contacts/selectors";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { DocTitle } from "../../components/DocTitle";

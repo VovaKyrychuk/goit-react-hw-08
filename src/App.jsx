@@ -7,6 +7,7 @@ import { ColorRing } from "react-loader-spinner";
 import { RefreshUser } from "./redux/auth/operations";
 import { RestrictedRoute } from "./components/RestrictedRout";
 import { PrivateRoute } from "./components/PrivateRout";
+import "./index.css";
 
 const HomePage = lazy(() => import("./page/HomePage/HomePage"));
 const ContactsPage = lazy(() => import("./page/ContactsPage/ContactsPage"));

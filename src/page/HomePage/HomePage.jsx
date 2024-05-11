@@ -12,14 +12,9 @@ export default function HomePage() {
         </div>
         <p className={css.text}>
           <span className={css.span}>Phone Book </span>
-          is a convenient application for storing and managing your contacts.
-          Forget about the clutter in your phone directory -
-          <span className={css.span}> Phone Book</span> will help you easily
-          organize your contacts, quickly find the people you need, and stay
-          connected at all times. Add{" "}
-          <span className={css.span}>new contacts</span> or edit existing ones
-          to always have up-to-date information and then quickly find by
-          searching by name or number.
+        </p>
+        <p className={css.text}>
+          The best application for storing and managing your contacts.
         </p>
       </div>
 

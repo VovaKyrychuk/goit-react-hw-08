@@ -1,42 +1,15 @@
-import { GiRotaryPhone } from "react-icons/gi";
-import css from "./HomePage.module.css";
-import { DocTitle } from "../../components/DocTitle";
-
-export default function HomePage() {
+import { Navigation } from "../Navigation/Navigation";
+import { AuthNav } from "../AuthNav/AuthNav";
+import { UserMenu } from "../UserMenu/UserMenu";
+import css from "../AppBar/AppBar.module.css";
+import { useAuth } from "../../hooks/useAuth";
+export const AppBar = () => {
+  const { isLoggedIn } = useAuth();
   return (
-    <>
-      <DocTitle>Home</DocTitle>
-      <div className="context">
-        <div className={css.phone}>
-          <GiRotaryPhone size={150} />
-        </div>
-        <p className={css.text}>
-          <span className={css.span}>Phone Book </span>
-          is a convenient application for storing and managing your contacts.
-          Forget about the clutter in your phone directory -
-          <span className={css.span}> Phone Book</span> will help you easily
-          organize your contacts, quickly find the people you need, and stay
-          connected at all times. Add{" "}
-          <span className={css.span}>new contacts</span> or edit existing ones
-          to always have up-to-date information and then quickly find by
-          searching by name or number.
-        </p>
-      </div>
+    <header>
+      <Navigation />
 
-      <div className="area">
-        <ul className="circles">
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-          <li></li>
-        </ul>
-      </div>
-    </>
+      {isLoggedIn ? <UserMenu /> : <AuthNav />}
+    </header>
   );
-}
+};

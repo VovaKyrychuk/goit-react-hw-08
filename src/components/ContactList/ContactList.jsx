@@ -3,7 +3,8 @@ import css from "./ContactList.module.css";
 import { Contact } from "../Contact/Contact";
 import { useSelector } from "react-redux";
 import { ColorRing } from "react-loader-spinner";
-import { selectLoading, selectVisibleContacts } from "../../redux/selectors";
+import { selectLoading } from "../../redux/contacts/selectors";
+import { selectVisibleContacts } from "../../redux/contacts/selectors";
 
 export const ContactList = ({ handleScroll }) => {
   const loading = useSelector(selectLoading);
