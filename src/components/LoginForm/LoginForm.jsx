@@ -1,4 +1,4 @@
-import css from "./LogInForm.module.css";
+import css from "./LoginForm.module.css";
 import { useDispatch } from "react-redux";
 import { login } from "../../redux/auth/operations";
 import { Formik, Form, Field, ErrorMessage } from "formik";
@@ -6,7 +6,7 @@ import * as Yup from "yup";
 import { useId } from "react";
 import toast from "react-hot-toast";
 
-export const LogInForm = () => {
+export const LoginForm = () => {
   const dispatch = useDispatch();
 
   const contactSchema = Yup.object().shape({
